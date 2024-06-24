@@ -1,10 +1,13 @@
 using HerdingCats.Components;
+using HerdingCats.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddDbContextFactory<KittyDbContext>(options => options.UseSqlite("app.db"));
 
 var app = builder.Build();
 
