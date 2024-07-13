@@ -42,15 +42,15 @@ public static class TestObjects
         List<Address> addresses = [
             new Address()
             {
-                Street="221B Baker St",
-                City="London",
-                PostCode=1111
+                Street = "221B Baker St",
+                City = "London",
+                PostCode = 1111
             },
             new Address()
             {
-                Street="742 Evergreen Terrace",
-                City="Springfield",
-                PostCode=2222
+                Street = "742 Evergreen Terrace",
+                City = "Springfield",
+                PostCode = 2222
             }
         ];
 

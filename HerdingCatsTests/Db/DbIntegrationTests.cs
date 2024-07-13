@@ -1,4 +1,5 @@
 using FluentAssertions;
+
 using HerdingCats.Data;
 using HerdingCats.Data.Model;
 

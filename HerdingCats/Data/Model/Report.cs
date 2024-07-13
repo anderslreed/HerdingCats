@@ -19,16 +19,16 @@ public class Report()
     public CanCheck CanCheckPaws { get; set; }
     public CanCheck CanCheckEars { get; set; }
     public CanCheck CanCheckTeeth { get; set; }
-    public bool ReactsToSound { get; set; } 
+    public bool ReactsToSound { get; set; }
     public bool ReactsToNewPeople { get; set; }
     public bool ReactsToMovement { get; set; }
     public string? ReactsToOther { get; set; }
     public string Developments { get; set; } = "";
     public string Description { get; set; } = "";
     public bool PhotographerConsent { get; set; }
-    public string? OverallEvaluation { get; set;}
+    public string? OverallEvaluation { get; set; }
     public string? GuidanceEvaluation { get; set; }
-    public string? HandleScaredCats { get; set;}
+    public string? HandleScaredCats { get; set; }
     public string? ImprovementSuggestions { get; set; }
     public string? Comments { get; set; }
 

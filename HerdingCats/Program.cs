@@ -1,5 +1,6 @@
 using HerdingCats.Components;
 using HerdingCats.Data;
+
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
