@@ -1,0 +1,31 @@
+@page "/cats"
+
+@using HerdingCats.Data.Model
+
+<RadzenColumn>
+    <RadzenRow>
+        <RadzenDataGrid TItem=@Cat
+                        Data=@Cats
+                        SelectionMode=@DataGridSelectionMode.Single
+                        CellClick=@OnCellClick>
+            <Columns>
+                <RadzenDataGridColumn Title="Number" Property="SecondaryId" />
+                <RadzenDataGridColumn Title="Name" Property="Name" />
+                <RadzenDataGridColumn Title="Intake Date" Property="IntakeDate" />
+            </Columns>
+        </RadzenDataGrid>
+    </RadzenRow>
+</RadzenColumn>
+
+@code
+{
+    [Parameter]
+    public List<Cat>? Cats { get; set; }
+
+    private Cat? editingCat;
+
+    private void OnCellClick(DataGridCellMouseEventArgs<Cat> args)
+    {
+        editingCat = args.Data;
+    }
+}
