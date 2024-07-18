@@ -10,7 +10,6 @@ public class Cat
 
     public override bool Equals(object? obj) =>
         obj is Cat other &&
-        SecondaryId == other.SecondaryId &&
         Name == other.Name &&
         IntakeDate == other.IntakeDate;
 
