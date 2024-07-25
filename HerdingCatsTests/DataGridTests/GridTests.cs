@@ -40,9 +40,40 @@ public class GridTests : TestContext
         items[1].Value.Should().Be(42);
     }
 
-    private IRenderedComponent<Grid<BindingTestObject>> GetGrid() => RenderComponent<Grid<BindingTestObject>>(
-            ComponentParameter.CreateParameter("Data", items),
-            ComponentParameter.CreateParameter("Columns", GetColumns()));
+    [Fact]
+    public void OnAddButtonClick_NewItemEditing()
+    {
+        var component = GetGrid();
+
+        component.Find("#grid_test_btn_add").Click();
+
+        component.Find("tbody").Children[3].FindDescendant<IHtmlInputElement>().Should().NotBeNull();
+    }
+
+    [Fact]
+    public void OnDeleteButtonClick_ItemDeleted()
+    {
+        var component = GetGrid();
+
+        component.Find("tbody").Children[1].Children[1].Click();
+        component.Find("#grid_test_btn_del").Click();
+
+        items.Count.Should().Be(2);
+    }
+
+    [Fact]
+    public void OnNoSelection_DeletButtonDisabled()
+    {
+        var component = GetGrid([]);
+
+        component.Find("#grid_test_btn_del").IsEnabled().Should().BeFalse();
+    }
+
+    private IRenderedComponent<Grid<BindingTestObject>> GetGrid(List<BindingTestObject>? data = null) => RenderComponent<Grid<BindingTestObject>>(
+            ComponentParameter.CreateParameter("Data", data ?? items),
+            ComponentParameter.CreateParameter("Columns", GetColumns()),
+            ComponentParameter.CreateParameter("ItemFactory", () => new BindingTestObject()),
+            ComponentParameter.CreateParameter("ItemName", "Test"));
 
     private static RenderFragment GetColumns() => builder =>
     {
