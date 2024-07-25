@@ -13,8 +13,8 @@ namespace HerdingCats.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Address>().HasMany(a => a.Cats).WithOne().HasForeignKey("address");
-            modelBuilder.Entity<Address>().HasMany(a => a.Humans).WithOne().HasForeignKey("address");
+            modelBuilder.Entity<Cat>().HasOne<Address>();
+            modelBuilder.Entity<Human>().HasOne<Address>();
             modelBuilder.Entity<Cat>().HasMany(c => c.Reports).WithOne().HasForeignKey("cat");
             base.OnModelCreating(modelBuilder);
         }

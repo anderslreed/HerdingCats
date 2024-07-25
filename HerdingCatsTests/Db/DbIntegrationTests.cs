@@ -3,6 +3,8 @@ using FluentAssertions;
 using HerdingCats.Data;
 using HerdingCats.Data.Model;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace HerdingCatsTests.Db;
 
 public class DbIntegrationTests : SqliteMemoryDbTest
@@ -10,15 +12,18 @@ public class DbIntegrationTests : SqliteMemoryDbTest
     [Fact]
     public void OnPersistGraph_RetrievedGraphIsEqual()
     {
+        TestObjects testObjects = new();
+
         using KittyDbContext addContext = Services.GetService<KittyDbContext>() ?? throw new Exception();
         addContext.Database.EnsureCreated();
-        List<Address> addresses = TestObjects.GetAddresses();
-        addContext.AddRange(addresses);
+        addContext.AddRange(testObjects.humans);
+        addContext.AddRange(testObjects.cats);
         addContext.SaveChanges();
-
         using KittyDbContext retrieveContext = Services.GetService<KittyDbContext>() ?? throw new Exception();
-        IList<Address>? result = [.. retrieveContext.Set<Address>()];
+        DbSet<Human>? humans = retrieveContext.Set<Human>();
+        DbSet<Cat>? cats = retrieveContext.Set<Cat>();
 
-        result.Should().Equal(addresses);
+        humans.Should().Equal(testObjects.humans);
+        cats.Should().Equal(testObjects.cats);
     }
 }

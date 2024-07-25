@@ -9,7 +9,7 @@ using HerdingCatsTests.DataGridTests;
 
 using Microsoft.AspNetCore.Components;
 
-namespace HerdingCatsTests.SharedComponentTests;
+namespace HerdingCatsTests.Grid;
 
 public class GridTests : TestContext
 {

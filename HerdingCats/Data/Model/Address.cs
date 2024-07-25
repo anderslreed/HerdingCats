@@ -7,10 +7,6 @@ public class Address
     public string City { get; set; } = "";
     public ushort PostCode { get; set; }
 
-    public IList<Human> Humans { get; } = [];
-
-    public IList<Cat> Cats { get; } = [];
-
     public override bool Equals(object? obj) =>
         obj is Address other &&
         Street == other.Street &&

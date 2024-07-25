@@ -2,9 +2,24 @@ using HerdingCats.Data.Model;
 
 namespace HerdingCatsTests;
 
-public static class TestObjects
+public class TestObjects
 {
-    public static List<Human> GetHumans() =>
+    public readonly List<Address> addresses = [
+            new Address()
+            {
+                Street = "221B Baker St",
+                City = "London",
+                PostCode = 1111
+            },
+            new Address()
+            {
+                Street = "742 Evergreen Terrace",
+                City = "Springfield",
+                PostCode = 2222
+            }
+        ];
+
+    public readonly List<Human> humans =
     [
         new()
         {
@@ -18,7 +33,7 @@ public static class TestObjects
         }
     ];
 
-    public static List<Cat> GetCats() =>
+    public readonly List<Cat> cats =
     [
         new()
         {
@@ -37,26 +52,19 @@ public static class TestObjects
         }
     ];
 
-    public static List<Address> GetAddresses()
+    public TestObjects()
     {
-        List<Address> addresses = [
-            new Address()
-            {
-                Street = "221B Baker St",
-                City = "London",
-                PostCode = 1111
-            },
-            new Address()
-            {
-                Street = "742 Evergreen Terrace",
-                City = "Springfield",
-                PostCode = 2222
-            }
-        ];
+        cats[0].Address = addresses[0];
+        cats[1].Address = addresses[1];
+        cats[2].Address = addresses[1];
+        humans[0].Address = addresses[0];
+        humans[1].Address = addresses[1];
 
-        var humans = GetHumans();
-        var cats = GetCats();
+        AddReports();
+    }
 
+    private void AddReports()
+    {
         Report report = new()
         {
             Author = humans[0],
@@ -119,14 +127,5 @@ public static class TestObjects
             PhotographerConsent = true
         };
         cats[2].Reports.Add(report);
-
-        addresses[0].Cats.Add(cats[0]);
-        addresses[1].Cats.Add(cats[1]);
-        addresses[1].Cats.Add(cats[2]);
-
-        addresses[0].Humans.Add(humans[0]);
-        addresses[1].Humans.Add(humans[1]);
-
-        return addresses;
     }
 }
