@@ -1,5 +1,6 @@
-using HerdingCats.Components.Pages;
 using FluentAssertions;
+
+using HerdingCats.Components.Pages;
 
 namespace HerdingCatsTests.Pages;
 
