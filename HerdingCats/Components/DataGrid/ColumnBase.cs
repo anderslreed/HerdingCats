@@ -1,4 +1,3 @@
-
 using System.Reflection;
 
 using Microsoft.AspNetCore.Components;
@@ -12,21 +11,12 @@ public abstract class ColumnBase<TItem, TValue> : RadzenDataGridColumn<TItem>
     protected Func<TItem, TValue>? getter;
     protected Action<TItem, TValue>? setter;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        Initialize();
-    }
-
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Initialize();
-    }
 
-    private void Initialize()
-    {
         EditTemplate = GetEditTemplate();
+
         Type itemType = typeof(TItem);
         PropertyInfo prop = itemType.GetProperty(Property) ?? throw new KeyNotFoundException($"'{itemType}' has no property '{Property}'");
         getter = (item) => (TValue)prop.GetValue(item)!;

@@ -31,17 +31,7 @@ public class Grid<TItem> : RadzenDataGrid<TItem>
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Initialize();
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        Initialize();
-    }
-
-    private void Initialize()
-    {
+        
         CellDoubleClick = new EventCallback<DataGridCellMouseEventArgs<TItem>>(this, OnCellDoubleClick);
         FooterTemplate  = GetFooterTemplate();
         SelectionMode = DataGridSelectionMode.Single;
