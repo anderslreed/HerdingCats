@@ -38,17 +38,17 @@ public class TestObjects
         new()
         {
             Name = "InTheHat",
-            IntakeDate = new DateTime(2000, 1, 2)
+            IntakeDate = new DateOnly(2000, 1, 2)
         },
         new()
         {
             Name = "InBoots",
-            IntakeDate = new DateTime(2000, 2, 3)
+            IntakeDate = new DateOnly(2000, 2, 3)
         },
         new()
         {
             Name = "Garfield",
-            IntakeDate = new DateTime(2000, 4, 5)
+            IntakeDate = new DateOnly(2000, 4, 5)
         }
     ];
 
