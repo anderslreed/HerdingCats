@@ -7,15 +7,15 @@
 @typeparam TItem where TItem : new()
 
 <RadzenCard>
-    <RadzenDataGrid @ref=grid id=@gridId TItem=@TItem Data=@Data CellDoubleClick=@OnCellDoubleClick
+    <RadzenDataGrid @ref=_grid id=@_gridId TItem=@TItem Data=@Data CellDoubleClick=@OnCellDoubleClick
         SelectionMode=@DataGridSelectionMode.Single @bind-Value=@SelectedList>
         <Columns>
             @Columns
         </Columns>
     </RadzenDataGrid>
-    <RadzenButton id=@addButtonId Click=OnAddButtonClick aria-label=@addButtonAria />
-    <RadzenButton id=@removeButtonId Click=OnDeleteButtonClick Disabled=@(_selectedItem is null)
-        aria-label=@removeButtonAria />
+    <RadzenButton id=@_addButtonId Click=OnAddButtonClick aria-label=@_addButtonAria />
+    <RadzenButton id=@_removeButtonId Click=OnDeleteButtonClick Disabled=@(_selectedItem is null)
+        aria-label=@_removeButtonAria />
 </RadzenCard>
 
 @code {
@@ -39,33 +39,41 @@
     private IList<TItem> SelectedList
     {
         get => _selectedItem is null ? [] : [_selectedItem];
-        set => _selectedItem = value.First();
+        set
+        {
+            TItem? nextSelection = value.FirstOrDefault();
+            if (_selectedItem is not null && !_selectedItem.Equals(nextSelection))
+            {
+                _grid!.CancelEditRow(_selectedItem);
+            }
+            _selectedItem = nextSelection;
+        }
     }
 
     private TItem? _selectedItem;
-    private RadzenDataGrid<TItem>? grid;
+    private RadzenDataGrid<TItem>? _grid;
 
-    private string? gridId;
-    private string? addButtonId;
-    private string? addButtonAria;
-    private string? removeButtonId;
-    private string? removeButtonAria;
+    private string? _gridId;
+    private string? _addButtonId;
+    private string? _addButtonAria;
+    private string? _removeButtonId;
+    private string? _removeButtonAria;
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        gridId = (ComponentName ?? $"grid_{ItemName}").ToLower();
-        addButtonId = $"{gridId}_btn_add";
-        addButtonAria = $"Add new {ItemName}";
-        removeButtonId = $"{gridId}_btn_rm";
-        removeButtonAria = $"Remove selected {ItemName}";
+        _gridId = (ComponentName ?? $"grid_{ItemName}").ToLower();
+        _addButtonId = $"{_gridId}_btn_add";
+        _addButtonAria = $"Add new {ItemName}";
+        _removeButtonId = $"{_gridId}_btn_rm";
+        _removeButtonAria = $"Remove selected {ItemName}";
     }
 
     private void OnCellDoubleClick(DataGridCellMouseEventArgs<TItem> args)
     {
-        _selectedItem = args.Data;
-        grid!.EditRow(args.Data);
+        SelectedList = [args.Data];
+        _grid!.EditRow(args.Data);
     }
 
     private async void OnAddButtonClick()
@@ -74,8 +82,8 @@
         {
             TItem item = ItemFactory();
             Data.Add(item);
-            await grid!.RefreshDataAsync();
-            await grid!.EditRow(item);
+            await _grid!.RefreshDataAsync();
+            await _grid!.EditRow(item);
         }
     }
 
@@ -84,7 +92,7 @@
         if (_selectedItem is not null)
         {
             Data.Remove(_selectedItem);
-            await grid!.RefreshDataAsync();
+            await _grid!.RefreshDataAsync();
             _selectedItem = default;
         }
     }

@@ -28,6 +28,18 @@ public class GridTests : TestContext
     }
 
     [Fact]
+    public void OnClick_CancelPreviousEdit()
+    {
+        var component = GetGrid();
+
+        component.Find("tbody").Children[0].Children[1].DoubleClick();
+        component.Find("tbody").Children[1].Children[1].Click();
+
+        component.Find("tbody").Children[0].FindDescendant<IHtmlInputElement>().Should().BeNull();
+        component.Find("tbody").Children[1].FindDescendant<IHtmlInputElement>().Should().BeNull();
+    }
+
+    [Fact]
     public void OnDoubleClick_EditorIsBoundToItem()
     {
         var component = GetGrid();
@@ -36,6 +48,18 @@ public class GridTests : TestContext
         component.Find("tbody").Children[1].Children[1].FindDescendant<IHtmlInputElement>()?.Change(42);
 
         items[1].Value.Should().Be(42);
+    }
+
+    [Fact]
+    public void OnDoubleClick_CancelPreviousEdit()
+    {
+        var component = GetGrid();
+
+        component.Find("tbody").Children[0].Children[1].DoubleClick();
+        component.Find("tbody").Children[1].Children[1].DoubleClick();
+
+        component.Find("tbody").Children[0].FindDescendant<IHtmlInputElement>().Should().BeNull();
+        component.Find("tbody").Children[1].FindDescendant<IHtmlInputElement>().Should().NotBeNull();
     }
 
     [Fact]
