@@ -5,11 +5,9 @@ using FluentAssertions;
 
 using HerdingCats.Components.DataGrid;
 
-using HerdingCatsTests.DataGridTests;
-
 using Microsoft.AspNetCore.Components;
 
-namespace HerdingCatsTests.Grid;
+namespace HerdingCatsTests.DataGridTests;
 
 public class GridTests : TestContext
 {
@@ -56,7 +54,7 @@ public class GridTests : TestContext
         var component = GetGrid();
 
         component.Find("tbody").Children[1].Children[1].Click();
-        component.Find("#grid_test_btn_del").Click();
+        component.Find("#grid_test_btn_rm").Click();
 
         items.Count.Should().Be(2);
     }
@@ -66,7 +64,7 @@ public class GridTests : TestContext
     {
         var component = GetGrid([]);
 
-        component.Find("#grid_test_btn_del").IsEnabled().Should().BeFalse();
+        component.Find("#grid_test_btn_rm").IsEnabled().Should().BeFalse();
     }
 
     private IRenderedComponent<Grid<BindingTestObject>> GetGrid(List<BindingTestObject>? data = null) => RenderComponent<Grid<BindingTestObject>>(

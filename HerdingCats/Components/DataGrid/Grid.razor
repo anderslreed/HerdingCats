@@ -1,0 +1,91 @@
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web
+
+@using Radzen
+@using Radzen.Blazor
+
+@typeparam TItem where TItem : new()
+
+<RadzenCard>
+    <RadzenDataGrid @ref=grid id=@gridId TItem=@TItem Data=@Data CellDoubleClick=@OnCellDoubleClick
+        SelectionMode=@DataGridSelectionMode.Single @bind-Value=@SelectedList>
+        <Columns>
+            @Columns
+        </Columns>
+    </RadzenDataGrid>
+    <RadzenButton id=@addButtonId Click=OnAddButtonClick aria-label=@addButtonAria />
+    <RadzenButton id=@removeButtonId Click=OnDeleteButtonClick Disabled=@(_selectedItem is null)
+        aria-label=@removeButtonAria />
+</RadzenCard>
+
+@code {
+    [Parameter]
+    public RenderFragment Columns { get; set; } = builder => { };
+
+    [Parameter]
+    public string? ComponentName { get; set; }
+
+    [Parameter]
+    public ICollection<TItem> Data { get; set; } = [];
+
+    [Parameter]
+    public Func<TItem> ItemFactory { get; set; } = () => new();
+
+    [Parameter]
+    public string ItemName { get; set; } = typeof(TItem).Name;
+
+    public TItem? SelectedItem => _selectedItem;
+
+    private IList<TItem> SelectedList
+    {
+        get => _selectedItem is null ? [] : [_selectedItem];
+        set => _selectedItem = value.First();
+    }
+
+    private TItem? _selectedItem;
+    private RadzenDataGrid<TItem>? grid;
+
+    private string? gridId;
+    private string? addButtonId;
+    private string? addButtonAria;
+    private string? removeButtonId;
+    private string? removeButtonAria;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        gridId = (ComponentName ?? $"grid_{ItemName}").ToLower();
+        addButtonId = $"{gridId}_btn_add";
+        addButtonAria = $"Add new {ItemName}";
+        removeButtonId = $"{gridId}_btn_rm";
+        removeButtonAria = $"Remove selected {ItemName}";
+    }
+
+    private void OnCellDoubleClick(DataGridCellMouseEventArgs<TItem> args)
+    {
+        _selectedItem = args.Data;
+        grid!.EditRow(args.Data);
+    }
+
+    private async void OnAddButtonClick()
+    {
+        if (ItemFactory is not null)
+        {
+            TItem item = ItemFactory();
+            Data.Add(item);
+            await grid!.RefreshDataAsync();
+            await grid!.EditRow(item);
+        }
+    }
+
+    private async void OnDeleteButtonClick()
+    {
+        if (_selectedItem is not null)
+        {
+            Data.Remove(_selectedItem);
+            await grid!.RefreshDataAsync();
+            _selectedItem = default;
+        }
+    }
+}
