@@ -51,7 +51,7 @@ public class GridTests : TestContext
     }
 
     [Fact]
-    public void OnDoubleClick_CancelPreviousEdit()
+    public void OnDoubleClick_CancelPreviousItemEditing()
     {
         var component = GetGrid();
 
@@ -70,6 +70,17 @@ public class GridTests : TestContext
         component.Find("#grid_test_btn_add").Click();
 
         component.Find("tbody").Children[3].FindDescendant<IHtmlInputElement>().Should().NotBeNull();
+    }
+
+    [Fact]
+    public void OnAddButtonClick_CancelPreviousItemEditing()
+    {
+        var component = GetGrid();
+
+        component.Find("tbody").Children[1].Children[1].DoubleClick();
+        component.Find("#grid_test_btn_add").Click();
+
+        component.Find("tbody").Children[1].FindDescendant<IHtmlInputElement>().Should().BeNull();
     }
 
     [Fact]

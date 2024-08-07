@@ -82,6 +82,7 @@
         {
             TItem item = ItemFactory();
             Data.Add(item);
+            SelectedList = [item];
             await _grid!.RefreshDataAsync();
             await _grid!.EditRow(item);
         }
