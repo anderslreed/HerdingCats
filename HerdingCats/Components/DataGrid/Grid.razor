@@ -13,8 +13,8 @@
             @Columns
         </Columns>
     </RadzenDataGrid>
-    <RadzenButton id=@_addButtonId Click=OnAddButtonClick aria-label=@_addButtonAria />
-    <RadzenButton id=@_removeButtonId Click=OnDeleteButtonClick Disabled=@(_selectedItem is null)
+    <RadzenButton id=@_addButtonId Text=@($"New {ItemName}") Icon="add_circle" Click=OnAddButtonClick aria-label=@_addButtonAria />
+    <RadzenButton id=@_removeButtonId Text=@($"Remove selected {ItemName}") Icon="delete" Click=OnDeleteButtonClick Disabled=@(_selectedItem is null)
         aria-label=@_removeButtonAria />
 </RadzenCard>
 
