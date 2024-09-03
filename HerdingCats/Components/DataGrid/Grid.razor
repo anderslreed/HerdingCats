@@ -34,6 +34,9 @@
     [Parameter]
     public string ItemName { get; set; } = typeof(TItem).Name;
 
+    [Parameter]
+    public bool IsEditable { get; set; } = true;
+
     public TItem? SelectedItem => _selectedItem;
 
     private IList<TItem> SelectedList
@@ -73,7 +76,10 @@
     private void OnCellDoubleClick(DataGridCellMouseEventArgs<TItem> args)
     {
         SelectedList = [args.Data];
-        _grid!.EditRow(args.Data);
+        if (IsEditable)
+        {
+            _grid!.EditRow(args.Data);
+        }
     }
 
     private async void OnAddButtonClick()

@@ -102,11 +102,23 @@ public class GridTests : TestContext
         component.Find("#grid_test_btn_rm").IsEnabled().Should().BeFalse();
     }
 
-    private IRenderedComponent<Grid<BindingTestObject>> GetGrid(List<BindingTestObject>? data = null) => RenderComponent<Grid<BindingTestObject>>(
+    [Fact]
+    public void IfEditDisabled_ShowsNoEditControls()
+    {
+        var component = GetGrid(isEditEnabled: false);
+
+        component.Find("tbody").Children[1].Children[1].DoubleClick();
+
+        component.Find("tbody").Children[1].FindDescendant<IHtmlInputElement>().Should().BeNull();
+    }
+
+    private IRenderedComponent<Grid<BindingTestObject>> GetGrid(List<BindingTestObject>? data = null, bool isEditEnabled = true)
+        => RenderComponent<Grid<BindingTestObject>>(
             ComponentParameter.CreateParameter("Data", data ?? items),
             ComponentParameter.CreateParameter("Columns", GetColumns()),
             ComponentParameter.CreateParameter("ItemFactory", () => new BindingTestObject()),
-            ComponentParameter.CreateParameter("ItemName", "Test"));
+            ComponentParameter.CreateParameter("ItemName", "Test"),
+            ComponentParameter.CreateParameter("IsEditable", isEditEnabled));
 
     private static RenderFragment GetColumns() => builder =>
     {
