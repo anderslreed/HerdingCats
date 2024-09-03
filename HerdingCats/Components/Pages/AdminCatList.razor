@@ -1,0 +1,43 @@
+@page "/cats"
+@rendermode InteractiveServer
+
+@using HerdingCats.Components.DataGrid
+@using HerdingCats.Components.Forms
+@using HerdingCats.Data.Model
+@using HerdingCats.Data.Repositories
+
+@inject IRepository<Cat, int> catRepository
+
+<RadzenColumn>
+    <Grid @ref=_grid TItem=@Cat ComponentId="cats" Data=@_cats IsEditable=false HasAddButton=false>
+        <Columns>
+            <NumericColumn TItem=@Cat TValue=@int Title="Number" Property="SecondaryId" />
+            <TextColumn TItem=@Cat Title="Name" Property="Name" />
+            <DateColumn TItem=@Cat Title="Intake Date" Property="IntakeDate" />
+        </Columns>
+    </Grid>
+</RadzenColumn>
+<RadzenColumn>
+    <CatForm OnSubmit=AddCat />
+</RadzenColumn>
+
+@code
+{
+    private IList<Cat>? _cats;
+    private Grid<Cat>? _grid;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _cats = await catRepository!.GetAllAsync();
+    }
+
+    private async Task AddCat(Cat cat)
+    {
+        await catRepository.AddAsync(cat);
+
+        if (_grid is not null)
+        {
+            await _grid.RefreshDataAsync();
+        }
+    }
+}

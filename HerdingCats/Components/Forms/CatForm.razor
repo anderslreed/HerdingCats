@@ -1,0 +1,65 @@
+@using HerdingCats.Data.Model
+
+<RadzenCard>
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <RadzenLabel Component="txt_cat_name" Text="Name" @bind-Value=_name />
+                <RadzenTextBox Name="txt_cat_name" />
+            </RadzenStack>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <RadzenLabel Component="date_cat_intake" Text="Date of Intake" @bind-Value=_intakeDate />
+                <RadzenDatePicker TValue=DateOnly Name="date_cat_intake" />
+            </RadzenStack>
+            <RadzenStack Orientation=Orientation.Horizontal>
+                <RadzenStack Orientation=Orientation.Vertical>
+                    <RadzenLabel Component="num_cat_age_years" Text="Years" @bind-Value=_ageYears />
+                    <RadzenNumeric TValue=char Name="num_cat_age_years" />
+                </RadzenStack>
+                <RadzenStack Orientation=Orientation.Vertical>
+                    <RadzenLabel Component="num_cat_age_months" Text="Months" @bind-Value=_ageMonths />
+                    <RadzenNumeric TValue=char Name="num_cat_age_months" />
+                </RadzenStack>
+            </RadzenStack>
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <RadzenLabel Component="txt_cat_comments" Text="Comments" @bind-Value=_comments />
+                <RadzenTextArea Name="txt_cat_comments" />
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow>
+        <RadzenButton Text="Submit" />
+    </RadzenRow>
+</RadzenCard>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public Func<Cat, Task>? OnSubmit { get; set; }
+
+    private string _name = "";
+    private DateOnly _intakeDate = new();
+    private short _ageYears;
+    private short _ageMonths;
+    private string _comments = "";
+
+    public async Task OnSubmitClick()
+    {
+        Cat cat = new()
+            {
+                Name = _name,
+                BirthDate = GetBirthDate(),
+                IntakeDate = _intakeDate,
+                IntakeComments = _comments
+            };
+        if (OnSubmit is not null)
+        {
+            await OnSubmit.Invoke(cat);
+        }
+    }
+
+
+    private DateOnly GetBirthDate() => new DateOnly().AddYears(-_ageYears).AddMonths(-_ageMonths);
+}

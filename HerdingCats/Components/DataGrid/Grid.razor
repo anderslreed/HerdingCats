@@ -6,24 +6,26 @@
 
 @typeparam TItem where TItem : new()
 
-<RadzenCard>
-    <RadzenDataGrid @ref=_grid id=@_gridId TItem=@TItem Data=@Data CellDoubleClick=@OnCellDoubleClick
-        SelectionMode=@DataGridSelectionMode.Single @bind-Value=@SelectedList>
-        <Columns>
-            @Columns
-        </Columns>
-    </RadzenDataGrid>
-    <RadzenButton id=@_addButtonId Text=@($"New {ItemName}") Icon="add_circle" Click=OnAddButtonClick aria-label=@_addButtonAria />
-    <RadzenButton id=@_removeButtonId Text=@($"Remove selected {ItemName}") Icon="delete" Click=OnDeleteButtonClick Disabled=@(_selectedItem is null)
-        aria-label=@_removeButtonAria />
-</RadzenCard>
+<RadzenDataGrid @ref=_grid id=@_gridId TItem=@TItem Data=@Data CellDoubleClick=@OnCellDoubleClick
+    SelectionMode=@DataGridSelectionMode.Single @bind-Value=@SelectedList>
+    <Columns>
+        @Columns
+    </Columns>
+</RadzenDataGrid>
+@if (HasAddButton)
+{
+    <RadzenButton id=@_addButtonId Text=@($"New {ItemName}") Icon="add_circle" Click=OnAddButtonClick
+        aria-label=@_addButtonAria />
+}
+<RadzenButton id=@_removeButtonId Text=@($"Remove selected {ItemName}") Icon="delete" Click=OnDeleteButtonClick
+    Disabled=@(_selectedItem is null) aria-label=@_removeButtonAria />
 
 @code {
     [Parameter]
     public RenderFragment Columns { get; set; } = builder => { };
 
     [Parameter]
-    public string? ComponentName { get; set; }
+    public string? ComponentId { get; set; }
 
     [Parameter]
     public ICollection<TItem> Data { get; set; } = [];
@@ -36,6 +38,9 @@
 
     [Parameter]
     public bool IsEditable { get; set; } = true;
+
+    [Parameter]
+    public bool HasAddButton { get; set; } = true;
 
     public TItem? SelectedItem => _selectedItem;
 
@@ -62,11 +67,19 @@
     private string? _removeButtonId;
     private string? _removeButtonAria;
 
+    public async Task RefreshDataAsync()
+    {
+        if (_grid is not null)
+        {
+            await _grid.RefreshDataAsync();
+        }
+    }
+
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        _gridId = (ComponentName ?? $"grid_{ItemName}").ToLower();
+        _gridId = (ComponentId ?? $"grid_{ItemName}").ToLower();
         _addButtonId = $"{_gridId}_btn_add";
         _addButtonAria = $"Add new {ItemName}";
         _removeButtonId = $"{_gridId}_btn_rm";

@@ -12,7 +12,7 @@ public class CatRepository(KittyDbContext context) : IRepository<Cat, int>
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Cat>> GetAll() => await context.Cats.ToListAsync();
+    public async Task<IList<Cat>> GetAllAsync() => await context.Cats.ToListAsync();
 
     public async Task<Cat?> GetByIdAsync(int id) => await context.FindAsync<Cat>(id);
 

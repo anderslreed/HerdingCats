@@ -1,5 +1,7 @@
 using HerdingCats.Components;
 using HerdingCats.Data;
+using HerdingCats.Data.Model;
+using HerdingCats.Data.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-builder.Services.AddDbContextFactory<KittyDbContext>(options => options.UseSqlite("app.db"));
+builder.Services.AddDbContextFactory<KittyDbContext>(options => options.UseSqlite("DataSource=app.db"));
+builder.Services.AddScoped<IRepository<Cat, int>, CatRepository>();
 
 var app = builder.Build();
 
@@ -27,5 +30,8 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+using var context = app.Services.GetRequiredService<IDbContextFactory<KittyDbContext>>().CreateDbContext();
+context.Database.EnsureCreated();
 
 app.Run();

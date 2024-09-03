@@ -112,13 +112,22 @@ public class GridTests : TestContext
         component.Find("tbody").Children[1].FindDescendant<IHtmlInputElement>().Should().BeNull();
     }
 
-    private IRenderedComponent<Grid<BindingTestObject>> GetGrid(List<BindingTestObject>? data = null, bool isEditEnabled = true)
+    [Fact]
+    public void IfAddDisabled_ShowsNoAddButton()
+    {
+        var component = GetGrid(isAddEnabled: false);
+
+        component.Nodes.Where(node => node is IHtmlButtonElement).Count().Should().Be(1);
+    }
+
+    private IRenderedComponent<Grid<BindingTestObject>> GetGrid(List<BindingTestObject>? data = null, bool isEditEnabled = true, bool isAddEnabled = true)
         => RenderComponent<Grid<BindingTestObject>>(
             ComponentParameter.CreateParameter("Data", data ?? items),
             ComponentParameter.CreateParameter("Columns", GetColumns()),
             ComponentParameter.CreateParameter("ItemFactory", () => new BindingTestObject()),
             ComponentParameter.CreateParameter("ItemName", "Test"),
-            ComponentParameter.CreateParameter("IsEditable", isEditEnabled));
+            ComponentParameter.CreateParameter("IsEditable", isEditEnabled),
+            ComponentParameter.CreateParameter("HasAddButton", isAddEnabled));
 
     private static RenderFragment GetColumns() => builder =>
     {
