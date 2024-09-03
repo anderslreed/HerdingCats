@@ -12,6 +12,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddDbContextFactory<KittyDbContext>(options => options.UseSqlite("DataSource=app.db"));
 builder.Services.AddScoped<IRepository<Cat, int>, CatRepository>();
+builder.Services.AddScoped<IClientInfo, ClientInfo>();
 
 var app = builder.Build();
 
