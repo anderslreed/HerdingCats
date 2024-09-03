@@ -11,12 +11,12 @@ public class TestObjects
                 City = "London",
                 PostCode = 1111
             },
-            new Address()
-            {
-                Street = "742 Evergreen Terrace",
-                City = "Springfield",
-                PostCode = 2222
-            }
+        new Address()
+        {
+            Street = "742 Evergreen Terrace",
+            City = "Springfield",
+            PostCode = 2222
+        }
         ];
 
     public readonly List<Human> humans =

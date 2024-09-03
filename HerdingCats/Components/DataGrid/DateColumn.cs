@@ -4,7 +4,7 @@ using Radzen.Blazor;
 
 namespace HerdingCats.Components.DataGrid;
 
-public class DateColumn<TItem> : ColumnBase<TItem, DateOnly> 
+public class DateColumn<TItem> : ColumnBase<TItem, DateOnly>
 {
     protected override RenderFragment<TItem> GetEditTemplate() => item => builder =>
     {

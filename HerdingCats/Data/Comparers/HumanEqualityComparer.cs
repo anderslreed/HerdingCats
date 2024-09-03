@@ -14,6 +14,6 @@ class HumanEqualityComparer : IEqualityComparer<Human>
         lhs.FirstName == rhs.FirstName &&
         lhs.LastName == rhs.LastName &&
         addressEqualityComparer.Equals(lhs.Address, rhs.Address);
-        
+
     public int GetHashCode([DisallowNull] Human obj) => HashCode.Combine(obj.FirstName, obj.LastName);
 }
