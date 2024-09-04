@@ -1,11 +1,14 @@
 using HerdingCats.Data.Model;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace HerdingCats.Data
 {
 
-    public class KittyDbContext(DbContextOptions<KittyDbContext> options) : DbContext(options)
+    public class KittyDbContext(DbContextOptions<KittyDbContext> options) : 
+        IdentityDbContext<Human, IdentityRole<int>, int>(options)
     {
         public DbSet<Cat> Cats { get; set; }
         public DbSet<Human> Humans { get; set; }
