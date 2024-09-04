@@ -8,8 +8,8 @@ namespace HerdingCats.Data
     public class KittyDbContext(DbContextOptions<KittyDbContext> options) : DbContext(options)
     {
         public DbSet<Cat> Cats { get; set; }
+        public DbSet<Human> Humans { get; set; }
         public DbSet<Address> Adresses { get; set; }
-
         public DbSet<Report> Reports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

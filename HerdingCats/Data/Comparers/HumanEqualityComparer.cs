@@ -4,7 +4,7 @@ using HerdingCats.Data.Model;
 
 namespace HerdingCats.Data.Comparers;
 
-class HumanEqualityComparer : IEqualityComparer<Human>
+public class HumanEqualityComparer : IEqualityComparer<Human>
 {
     private readonly AddressEqualityComparer addressEqualityComparer = new();
 
