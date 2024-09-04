@@ -10,13 +10,13 @@ public class TestObjects
         {
             Street = "221B Baker St",
             City = "London",
-            PostCode = 1111
+            PostalCode = 1111
         },
         new Address()
         {
             Street = "742 Evergreen Terrace",
             City = "Springfield",
-            PostCode = 2222
+            PostalCode = 2222
         }
     ];
 
