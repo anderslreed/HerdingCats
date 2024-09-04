@@ -1,0 +1,4 @@
+<RunConfiguration>
+    <MaxCpuCount>0</MaxCpuCount>
+    <TreatNoTestsAsError>true</TreatNoTestsAsError>
+</RunConfiguration>
