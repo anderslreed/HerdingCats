@@ -1,43 +1,23 @@
 @using HerdingCats.Data.Model
 
+@inherits FormBase<Address>
+
 <RadzenCard>
     <RadzenRow>
         <RadzenColumn>
             <RadzenStack Orientation=Orientation.Vertical>
                 <RadzenLabel Component="txt_new_addr_street" Text="Street" />
-                <RadzenTextBox Name="txt_new_addr_street" @bind-Value=_street />
+                <RadzenTextBox Name="txt_new_addr_street" @bind-Value=addingItem.Street />
             </RadzenStack>
             <RadzenStack Orientation=Orientation.Vertical>
                 <RadzenLabel Component="txt_new_addr_city" Text="City" />
-                <RadzenTextBox Name="txt_new_addr_city" @bind-Value=_city />
+                <RadzenTextBox Name="txt_new_addr_city" @bind-Value=addingItem.City />
             </RadzenStack>
             <RadzenStack>
                 <RadzenLabel Component="num_new_addr_postal" Text="Postal code" />
-                <RadzenNumeric TValue=ushort Name="num_new_addr_postal" @bind-Value=_postal />
+                <RadzenNumeric TValue=ushort Name="num_new_addr_postal" @bind-Value=addingItem.PostalCode />
             </RadzenStack>
-            <RadzenButton id="btn_new_addr_add" Text="Add address" aria-label="Add address" Click=OnAddButtonClick  />
+            <RadzenButton id="btn_new_addr_add" Text="Add address" aria-label="Add address" Click=AddNew  />
         </RadzenColumn>
     </RadzenRow>
 </RadzenCard>
-
-@code
-{
-    [Parameter]
-    [EditorRequired]
-    public Func<Address, Task>? OnNewAddress { get; set; }
-
-    private string _street = "";
-    private string _city = "";
-    private ushort _postal;
-
-    private async Task OnAddButtonClick()
-    {
-        Address address = new()
-        {
-            Street = _street,
-            City = _city,
-            PostalCode = _postal
-        };
-        await OnNewAddress!.Invoke(address);
-    }
-}

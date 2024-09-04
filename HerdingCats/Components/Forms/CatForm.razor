@@ -3,16 +3,18 @@
 
 @inject IClientInfo clientInfo
 
+@inherits FormBase<Cat>
+
 <RadzenCard>
     <RadzenRow>
         <RadzenColumn>
             <RadzenStack Orientation=Orientation.Vertical>
                 <RadzenLabel Component="txt_new_cat_name" Text="Name" />
-                <RadzenTextBox Name="txt_new_cat_name" @bind-Value=_name />
+                <RadzenTextBox Name="txt_new_cat_name" @bind-Value=addingItem.Name />
             </RadzenStack>
             <RadzenStack Orientation=Orientation.Vertical>
                 <RadzenLabel Component="date_new_cat_intake" Text="Date of Intake" />
-                <RadzenDatePicker TValue=DateOnly Name="date_new_cat_intake" @bind-Value=_intakeDate />
+                <RadzenDatePicker TValue=DateOnly Name="date_new_cat_intake" @bind-Value=addingItem.IntakeDate />
             </RadzenStack>
             <RadzenLabel Text="Age at intake" />
             <RadzenStack Orientation=Orientation.Horizontal>
@@ -29,25 +31,18 @@
         <RadzenColumn>
             <RadzenStack Orientation=Orientation.Vertical>
                 <RadzenLabel Component="txt_new_cat_comments" Text="Comments" />
-                <RadzenTextArea Name="txt_new_cat_comments" @bind-Value=_comments />
+                <RadzenTextArea Name="txt_new_cat_comments" @bind-Value=addingItem.IntakeComments />
             </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
     <RadzenRow>
-        <RadzenButton id="btn_add_new_cat" Text="Add cat" Click=OnSubmitClick aria-label="Add cat" />
+        <RadzenButton id="btn_add_new_cat" Text="Add cat" Click=AddNewCat aria-label="Add cat" />
     </RadzenRow>
 </RadzenCard>
 
 @code {
-    [Parameter]
-    [EditorRequired]
-    public Func<Cat, Task>? OnNewCat { get; set; }
-
-    private string _name = "";
-    private DateOnly _intakeDate = new();
     private short _ageYears = 1;
     private short _ageMonths;
-    private string _comments = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -55,26 +50,21 @@
 
         if (firstRender)
         {
-            DateTime clientDateTime = await clientInfo.DateTime();
-            _intakeDate = DateOnly.FromDateTime(clientDateTime);
+            await InitIntakeDate();
             StateHasChanged();
         }
     }
 
-    private async Task OnSubmitClick(MouseEventArgs _)
+    private async Task AddNewCat()
     {
-        Cat cat = new()
-            {
-                Name = _name,
-                BirthDate = GetBirthDate(),
-                IntakeDate = _intakeDate,
-                IntakeComments = _comments
-            };
-        if (OnNewCat is not null)
-        {
-            await OnNewCat.Invoke(cat);
-        }
+        addingItem.BirthDate = addingItem.IntakeDate.AddYears(-_ageYears).AddMonths(-_ageMonths);
+        await AddNew();
+        await InitIntakeDate();
     }
 
-    private DateOnly GetBirthDate() => _intakeDate.AddYears(-_ageYears).AddMonths(-_ageMonths);
+    private async Task InitIntakeDate()
+    {
+        DateTime clientDateTime = await clientInfo.DateTime();
+        addingItem.IntakeDate = DateOnly.FromDateTime(clientDateTime);
+    }
 }

@@ -75,5 +75,5 @@ public class CatFormTests
     private Task SubmitCallback(Cat cat) => Task.FromResult(submittedCat = cat);
 
     private IRenderedComponent<CatForm> GetComponent() =>
-        _testContext.RenderComponent<CatForm>(prms => prms.Add(cf => cf.OnNewCat, SubmitCallback));
+        _testContext.RenderComponent<CatForm>(prms => prms.Add(cf => cf.OnAddNew, SubmitCallback));
 }

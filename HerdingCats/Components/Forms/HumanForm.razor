@@ -1,43 +1,34 @@
 @using HerdingCats.Data.Model
 
+@inherits FormBase<Human>
+
 <RadzenCard>
     <RadzenRow>
         <RadzenColumn>
             <RadzenStack Orientation=Orientation.Vertical>
                 <RadzenLabel Component="txt_new_user_first_name" Text="First name" />
-                <RadzenTextBox Name="txt_new_user_first_name" @bind-Value=_firstName />
+                <RadzenTextBox Name="txt_new_user_first_name" @bind-Value=addingItem.FirstName />
             </RadzenStack>
             <RadzenStack Orientation=Orientation.Vertical>
                 <RadzenLabel Component="txt_new_user_last_name" Text="Last name" />
-                <RadzenTextBox Name="txt_new_user_last_name" @bind-Value=_lastName />
+                <RadzenTextBox Name="txt_new_user_last_name" @bind-Value=addingItem.LastName />
             </RadzenStack>
             <RadzenStack Orientation=Orientation.Vertical>
                 <RadzenLabel Component="num_new_user_phone" Text="Telephone number" />
                 <RadzenNumeric TValue=long Name="num_new_user_phone" @bind-Value=_phone />
             </RadzenStack>
-            <RadzenButton Text="Add person" aria-label="Add person" Click=OnAddButtonClick />
+            <RadzenButton Text="Add person" aria-label="Add person" Click=AddNew />
         </RadzenColumn>
     </RadzenRow>
 </RadzenCard>
 
 @code
 {
-    [Parameter]
-    [EditorRequired]
-    public Func<Human, Task>? OnNewHuman { get; set; }
-
-    private string _firstName = "";
-    private string _lastName = "";
     private long _phone;
 
     private async Task OnAddButtonClick()
     {
-        Human human = new()
-        {
-            FirstName = _firstName,
-            LastName = _lastName,
-            PhoneNumber = _phone.ToString()
-        };
-        await OnNewHuman!.Invoke(human);
+        addingItem.PhoneNumber = _phone.ToString();
+        await AddNew();
     }
 }

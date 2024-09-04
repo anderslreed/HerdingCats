@@ -23,7 +23,7 @@ public class AddressFormTests
     {
         var component = _testContext.RenderComponent<AddressForm>(prms =>
         {
-            prms.Add(af => af.OnNewAddress, AddAddressCallback);
+            prms.Add(af => af.OnAddNew, AddAddressCallback);
         });
 
         component.Find("#txt_new_addr_street").Change("22 Test Street");

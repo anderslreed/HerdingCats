@@ -21,7 +21,7 @@ public class HumanFormTests
     {
         IRenderedComponent<HumanForm> component = _testContext.RenderComponent<HumanForm>(prms => 
         {
-            prms.Add(hf => hf.OnNewHuman, NewHumanCallback);
+            prms.Add(hf => hf.OnAddNew, NewHumanCallback);
         });
         
         component.Find("#txt_new_user_first_name").Change("Skippy");
