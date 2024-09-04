@@ -4,22 +4,23 @@ namespace HerdingCatsTests;
 
 public class TestObjects
 {
-    public readonly List<Address> addresses = [
-            new Address()
-            {
-                Street = "221B Baker St",
-                City = "London",
-                PostCode = 1111
-            },
+    public readonly IList<Address> addresses =
+    [
+        new Address()
+        {
+            Street = "221B Baker St",
+            City = "London",
+            PostCode = 1111
+        },
         new Address()
         {
             Street = "742 Evergreen Terrace",
             City = "Springfield",
             PostCode = 2222
         }
-        ];
+    ];
 
-    public readonly List<Human> humans =
+    public readonly IList<Human> humans =
     [
         new()
         {
@@ -33,7 +34,7 @@ public class TestObjects
         }
     ];
 
-    public readonly List<Cat> cats =
+    public readonly IList<Cat> cats =
     [
         new()
         {

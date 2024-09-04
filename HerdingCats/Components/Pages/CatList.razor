@@ -9,7 +9,7 @@
 @inject IRepository<Cat, int> catRepository
 
 <RadzenColumn>
-    <Grid @ref=_grid TItem=@Cat ComponentId="cats" Data=@_cats IsEditable=false HasAddButton=false>
+    <Grid @ref=_grid TItem=@Cat ComponentId="grid_cats" Data=@_cats IsEditable=false HasAddButton=false>
         <Columns>
             <NumericColumn TItem=@Cat TValue=@int Title="Number" Property="SecondaryId" />
             <TextColumn TItem=@Cat Title="Name" Property="Name" />
@@ -18,7 +18,7 @@
     </Grid>
 </RadzenColumn>
 <RadzenColumn>
-    <CatForm OnSubmit=AddCat />
+    <CatForm OnNewCat=AddCat />
 </RadzenColumn>
 
 @code

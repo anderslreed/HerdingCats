@@ -1,51 +1,67 @@
+@using HerdingCats.Data
 @using HerdingCats.Data.Model
+
+@inject IClientInfo clientInfo
 
 <RadzenCard>
     <RadzenRow>
         <RadzenColumn>
             <RadzenStack Orientation=Orientation.Vertical>
-                <RadzenLabel Component="txt_cat_name" Text="Name" @bind-Value=_name />
-                <RadzenTextBox Name="txt_cat_name" />
+                <RadzenLabel Component="txt_new_cat_name" Text="Name" />
+                <RadzenTextBox Name="txt_new_cat_name" @bind-Value=_name />
             </RadzenStack>
             <RadzenStack Orientation=Orientation.Vertical>
-                <RadzenLabel Component="date_cat_intake" Text="Date of Intake" @bind-Value=_intakeDate />
-                <RadzenDatePicker TValue=DateOnly Name="date_cat_intake" />
+                <RadzenLabel Component="date_new_cat_intake" Text="Date of Intake" />
+                <RadzenDatePicker TValue=DateOnly Name="date_new_cat_intake" @bind-Value=_intakeDate />
             </RadzenStack>
+            <RadzenLabel Text="Age at intake" />
             <RadzenStack Orientation=Orientation.Horizontal>
                 <RadzenStack Orientation=Orientation.Vertical>
-                    <RadzenLabel Component="num_cat_age_years" Text="Years" @bind-Value=_ageYears />
-                    <RadzenNumeric TValue=char Name="num_cat_age_years" />
+                    <RadzenLabel Component="num_new_cat_age_years" Text="Years" />
+                    <RadzenNumeric TValue=short Name="num_new_cat_age_years" @bind-Value=_ageYears />
                 </RadzenStack>
                 <RadzenStack Orientation=Orientation.Vertical>
-                    <RadzenLabel Component="num_cat_age_months" Text="Months" @bind-Value=_ageMonths />
-                    <RadzenNumeric TValue=char Name="num_cat_age_months" />
+                    <RadzenLabel Component="num_new_cat_age_months" Text="Months" />
+                    <RadzenNumeric TValue=short Name="num_new_cat_age_months" @bind-Value=_ageMonths />
                 </RadzenStack>
             </RadzenStack>
         </RadzenColumn>
         <RadzenColumn>
             <RadzenStack Orientation=Orientation.Vertical>
-                <RadzenLabel Component="txt_cat_comments" Text="Comments" @bind-Value=_comments />
-                <RadzenTextArea Name="txt_cat_comments" />
+                <RadzenLabel Component="txt_new_cat_comments" Text="Comments" />
+                <RadzenTextArea Name="txt_new_cat_comments" @bind-Value=_comments />
             </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
     <RadzenRow>
-        <RadzenButton Text="Submit" />
+        <RadzenButton id="btn_add_new_cat" Text="Add cat" Click=OnSubmitClick aria-label="Add cat" />
     </RadzenRow>
 </RadzenCard>
 
 @code {
     [Parameter]
     [EditorRequired]
-    public Func<Cat, Task>? OnSubmit { get; set; }
+    public Func<Cat, Task>? OnNewCat { get; set; }
 
     private string _name = "";
     private DateOnly _intakeDate = new();
-    private short _ageYears;
+    private short _ageYears = 1;
     private short _ageMonths;
     private string _comments = "";
 
-    public async Task OnSubmitClick()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            DateTime clientDateTime = await clientInfo.DateTime();
+            _intakeDate = DateOnly.FromDateTime(clientDateTime);
+            StateHasChanged();
+        }
+    }
+
+    private async Task OnSubmitClick(MouseEventArgs _)
     {
         Cat cat = new()
             {
@@ -54,12 +70,11 @@
                 IntakeDate = _intakeDate,
                 IntakeComments = _comments
             };
-        if (OnSubmit is not null)
+        if (OnNewCat is not null)
         {
-            await OnSubmit.Invoke(cat);
+            await OnNewCat.Invoke(cat);
         }
     }
 
-
-    private DateOnly GetBirthDate() => new DateOnly().AddYears(-_ageYears).AddMonths(-_ageMonths);
+    private DateOnly GetBirthDate() => _intakeDate.AddYears(-_ageYears).AddMonths(-_ageMonths);
 }
