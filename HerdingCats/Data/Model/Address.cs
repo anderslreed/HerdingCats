@@ -6,4 +6,6 @@ public class Address
     public string Street { get; set; } = "";
     public string City { get; set; } = "";
     public ushort PostCode { get; set; }
+    public IList<Cat> Cats { get; set; } = [];
+    public IList<Human> Humans { get; set; } = [];
 }

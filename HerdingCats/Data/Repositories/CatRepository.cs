@@ -14,7 +14,13 @@ public class CatRepository(KittyDbContext context) : IRepository<Cat, int>
 
     public async Task<IList<Cat>> GetAllAsync() => await context.Cats.ToListAsync();
 
-    public async Task<Cat?> GetByIdAsync(int id) => await context.FindAsync<Cat>(id);
+    public async Task<Cat?> GetByIdAsync(int id) => 
+        await context.Cats.Where(cat => cat.Id == id)
+                          .Include(cat => cat.Address)
+                          .ThenInclude(adr => adr!.Cats)
+                          .Include(cat => cat.Address)
+                          .ThenInclude(adr => adr!.Humans)
+                          .FirstAsync();
 
     public async Task RemoveAsync(Cat cat)
     {
