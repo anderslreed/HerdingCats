@@ -13,7 +13,10 @@ public class CatEqualityComparer : IEqualityComparer<Cat>
         y is Cat rhs &&
         lhs.Name == rhs.Name &&
         lhs.IntakeDate == rhs.IntakeDate &&
-        addressEqualityComparer.Equals(lhs.Address, rhs.Address);
+        (
+           lhs.Address == null && rhs.Address == null ||
+           addressEqualityComparer.Equals(lhs.Address, rhs.Address)
+        );
 
     public int GetHashCode([DisallowNull] Cat obj) => HashCode.Combine(obj.SecondaryId, obj.Name, obj.IntakeDate);
 }
