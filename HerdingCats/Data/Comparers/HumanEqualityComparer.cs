@@ -6,7 +6,7 @@ namespace HerdingCats.Data.Comparers;
 
 class HumanEqualityComparer : IEqualityComparer<Human>
 {
-    private AddressEqualityComparer addressEqualityComparer = new();
+    private readonly AddressEqualityComparer addressEqualityComparer = new();
 
     public bool Equals(Human? x, Human? y) =>
         x is Human lhs &&
