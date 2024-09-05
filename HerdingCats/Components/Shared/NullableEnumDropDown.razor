@@ -1,0 +1,62 @@
+@using System.ComponentModel.DataAnnotations
+@using System.Linq.Expressions
+@using System.Reflection
+
+@typeparam TEnum where TEnum : struct, Enum
+
+
+<RadzenDropDown @ref=_dropDown TValue=TEnum? id=@ComponentId Data=_options TextProperty="Name" ValueProperty="Value"
+    Change=OnSelectChange />
+
+@code
+{
+    [Parameter]
+    [EditorRequired]
+    public string? ComponentId { get; set; }
+
+    [Parameter]
+    public TEnum? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<TEnum?> ValueChanged { get; set;}
+
+    [Parameter]
+    public Expression<Func<TEnum?>> ValueExpression { get; set; } = () => null;
+
+    private static readonly Type enumType = typeof(TEnum);
+    private readonly IList<EnumDropDownOption> _options;
+    private RadzenDropDown<TEnum?>? _dropDown;
+
+    public NullableEnumDropDown() => _options = Enum.GetValues<TEnum>()
+                                                    .Select(val => new EnumDropDownOption(val))
+                                                    .Prepend(new EnumDropDownOption(null))
+                                                    .ToList();
+
+    public void SelectValue(TEnum? value) => _dropDown!.SelectItem(value is null ? null : _options
+                                                       .First(opt => opt.Value.Equals(value)));
+            
+    private async void OnSelectChange(object? value) => await ValueChanged.InvokeAsync(value is TEnum val ? val : null);
+
+    private class EnumDropDownOption
+    {
+        public string Name { get; }
+        public TEnum? Value { get; }
+
+        public EnumDropDownOption(TEnum? element)
+        {
+            if (element is null)
+            {
+                Name = "";
+            }
+            else
+            {
+                TEnum el = (TEnum)element;
+                string? displayName = enumType.GetMember(el.ToString())
+                                            .FirstOrDefault(mi => mi.DeclaringType == enumType)?
+                                            .GetCustomAttribute<DisplayAttribute>()?.Name;
+                Name = displayName ?? el.ToString();
+            }
+            Value = element;
+        }
+    }
+}

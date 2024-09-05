@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 using Radzen.Blazor;
 
-namespace HerdingCats.Components.DataGrid;
+namespace HerdingCats.Components.Shared.DataGrid;
 
 public abstract class ColumnBase<TItem, TValue> : RadzenDataGridColumn<TItem>
 {

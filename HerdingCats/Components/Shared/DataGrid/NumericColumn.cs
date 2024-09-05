@@ -1,8 +1,10 @@
+using HerdingCats.Components.Shared.DataGrid;
+
 using Microsoft.AspNetCore.Components;
 
 using Radzen.Blazor;
 
-namespace HerdingCats.Components.DataGrid;
+namespace HerdingCats.Components.Shared.DataGrid;
 
 public class NumericColumn<TItem, TValue> : ColumnBase<TItem, TValue> where TValue : struct
 {

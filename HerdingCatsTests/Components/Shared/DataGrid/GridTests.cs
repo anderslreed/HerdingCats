@@ -3,11 +3,13 @@ using AngleSharp.Html.Dom;
 
 using FluentAssertions;
 
-using HerdingCats.Components.DataGrid;
+using HerdingCats.Components.Shared.DataGrid;
+
+using HerdingCatsTests.Components.Shared.DataGrid;
 
 using Microsoft.AspNetCore.Components;
 
-namespace HerdingCatsTests.DataGridTests;
+namespace HerdingCatsTests.Shared.DataGridTests;
 
 public class GridTests : TestContext
 {

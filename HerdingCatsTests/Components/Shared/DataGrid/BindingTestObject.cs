@@ -1,4 +1,4 @@
-namespace HerdingCatsTests.DataGridTests;
+namespace HerdingCatsTests.Components.Shared.DataGrid;
 public class BindingTestObject
 {
     public string Name { get; set; } = "";
