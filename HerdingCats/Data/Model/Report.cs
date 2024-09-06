@@ -6,15 +6,15 @@ public class Report()
     public Human Author { get; set; } = new();
     public DateTime Date { get; set; }
     public byte SafeScore { get; set; }
-    public CatAreas Areas { get; set; }
+    public CatAreas? Areas { get; set; }
     public string? CatAreasOther { get; set; }
-    public Touchability TouchTolerance { get; set; }
+    public Touchability? TouchTolerance { get; set; }
     public bool StaysNear { get; set; }
     public bool SeeksContact { get; set; }
     public bool TrustsKnownPeople { get; set; }
     public bool TrustsNewPeople { get; set; }
     public string FeedingComments { get; set; } = "";
-    public LitterboxHabits Litterbox { get; set; }
+    public LitterboxHabits? Litterbox { get; set; }
     public bool DigestiveIssues { get; set; }
     public CanCheck CanCheckPaws { get; set; }
     public CanCheck CanCheckEars { get; set; }
