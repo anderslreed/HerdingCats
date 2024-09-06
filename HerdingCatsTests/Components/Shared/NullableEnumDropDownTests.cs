@@ -76,18 +76,17 @@ public class NullableEnumDropDownTests
     public void OnSelectionChanged_UpdatesBoundValue()
     {
         DummyHandler handler = new();
-        var component = _testContext.RenderComponent<NullableEnumDropDown<TestEnum>>(prms => {
+        var component = _testContext.RenderComponent<NullableEnumDropDown<TestEnum>>(prms =>
+        {
             prms.Add(dd => dd.ValueChanged, handler.GetCallback());
         });
         var dropDown = component.FindComponent<RadzenDropDown<TestEnum?>>().Instance;
-        var targetItem = dropDown.Data.Cast<object>()
-                                      .Where((x, idx) => idx == 1)
-                                      .First();
-
-        dropDown.SelectItem(targetItem);
+        dropDown.SelectDropDownIndex(1);
 
         handler.valueChangedTarget.Should().Be(TestEnum.First);
     }
+
+    
 
     private class DummyHandler : IHandleEvent
     {
