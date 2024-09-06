@@ -35,7 +35,7 @@
     public void SelectValue(TEnum? value) => _dropDown!.SelectItem(value is null ? null : _options
                                                        .First(opt => opt.Value.Equals(value)));
             
-    private async void OnSelectChange(object? value) => await ValueChanged.InvokeAsync(value is TEnum val ? val : null);
+    private async void OnSelectChange(object? value) => await InvokeAsync(async () => await ValueChanged.InvokeAsync(value is TEnum val ? val : null));
 
     private class EnumDropDownOption
     {

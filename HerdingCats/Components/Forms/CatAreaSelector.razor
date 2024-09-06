@@ -1,0 +1,33 @@
+@using HerdingCats.Components.Shared
+@using HerdingCats.Data.Model
+
+@if (CurrentReport is Report report)
+{
+    <RadzenLabel Component="sel_report_areas" Text="What areas does the cat have access to?" />
+    <NullableEnumDropDown TEnum=CatAreas ComponentId="sel_report_areas" @bind-Value=AreaSelection />
+    @if (AreaSelection is CatAreas areas && areas == CatAreas.Other)
+    {
+        <RadzenLabel Component="txt_report_other_area" Text="Specify" />
+        <RadzenTextBox Name="txt_report_other_area" @bind-Value=report.CatAreasOther />
+    }
+}
+
+@code
+{
+    [Parameter]
+    [EditorRequired]
+    public Report? CurrentReport { get; set; }
+
+    private CatAreas? AreaSelection
+    {
+        get => CurrentReport?.Areas;
+        set
+        {
+            if (CurrentReport is not null)
+            {
+                CurrentReport.Areas = value;
+            }
+            InvokeAsync(StateHasChanged);
+        }
+    }
+}
