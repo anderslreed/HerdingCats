@@ -1,0 +1,44 @@
+@using HerdingCats.Components.Shared
+@using HerdingCats.Data.Model
+
+
+@inherits FormBase<Report>
+
+<RadzenCard>
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <RadzenLabel Component="num_report_safe_score" Text="How safe is the cat? (1-10 where 1 is least safe)" />
+                <RadzenNumeric Name="num_report_safe_score" @bind-Value=_addingReport.SafeScore />
+            </RadzenStack>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <CatAreaSelector CurrentReport=_addingReport />
+            </RadzenStack>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <RadzenLabel Component="sel_report_can_touch" Text="Can you touch the cat?" />
+                <NullableEnumDropDown TEnum=Touchability ComponentId="sel_report_can_touch" @bind-Value=_addingReport.TouchTolerance />
+            </RadzenStack>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <RadzenLabel Component="chk_report_stays_near" Text="Cat spends time close?" />
+                <RadzenCheckBox Name="chk_report_stays_near" @bind-Value=_addingReport.StaysNear />
+            </RadzenStack>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <RadzenLabel Component="chk_report_can_touch" Text="Cat can be touched?" />
+                <RadzenCheckBox Name="chk_report_can_touch" @bind-Value=_addingReport.TouchTolerance />
+            </RadzenStack>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <RadzenLabel Component="chk_report_seeks_contact" Text="Cat seeks contact?" />
+                <RadzenCheckBox Name="chk_report_seeks_contact" @bind-Value=_addingReport.SeeksContact />
+            </RadzenStack>
+            <RadzenStack Orientation=Orientation.Vertical>
+                <RadzenLabel Component="" Text="" />
+                
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenCard>
+
+@code
+{
+    private Report _addingReport = new();
+}
